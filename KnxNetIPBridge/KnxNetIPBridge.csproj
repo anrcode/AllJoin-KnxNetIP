@@ -121,13 +121,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BridgeRT\BridgeRT.vcxproj">
+      <Project>{2783a617-8e1d-40d1-9684-dfaeb8dd5406}</Project>
+      <Name>BridgeRT</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KnxNetIPAdapter\KnxNetIPAdapter.csproj">
       <Project>{5254f40c-cd4c-48f9-9c55-8040f071f1b4}</Project>
       <Name>KnxNetIPAdapter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BridgeRT\BridgeRT.vcxproj">
-      <Project>{2783a617-8e1d-40d1-9684-dfaeb8dd5406}</Project>
-      <Name>BridgeRT</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

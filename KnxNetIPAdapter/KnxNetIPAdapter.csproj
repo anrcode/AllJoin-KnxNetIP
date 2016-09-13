@@ -154,7 +154,7 @@
       <Project>{168bfd58-6abf-4e80-b71b-144dc3f1b0db}</Project>
       <Name>SparkAlljoyn</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\BridgeRT\BridgeRT.vcxproj">
+    <ProjectReference Include="..\BridgeRT\BridgeRT.vcxproj">
       <Project>{2783a617-8e1d-40d1-9684-dfaeb8dd5406}</Project>
       <Name>BridgeRT</Name>
     </ProjectReference>
