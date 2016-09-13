@@ -7,8 +7,8 @@
     <ProjectGuid>{168BFD58-6ABF-4E80-B71B-144DC3F1B0DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Alljoyn.Bridge.Common</RootNamespace>
-    <AssemblyName>Alljoyn.Bridge.Common</AssemblyName>
+    <RootNamespace>Alljoyn.Bridge</RootNamespace>
+    <AssemblyName>Alljoyn.Bridge</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
@@ -123,6 +123,7 @@
     <ProjectReference Include="..\BridgeRT\BridgeRT.vcxproj">
       <Project>{2783a617-8e1d-40d1-9684-dfaeb8dd5406}</Project>
       <Name>BridgeRT</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
