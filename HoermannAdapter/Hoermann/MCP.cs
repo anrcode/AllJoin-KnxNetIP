@@ -179,15 +179,25 @@ namespace HoermannAdapter.Hoermann
             return MCP.Create(McpCommand.SetGroupName, groupId, name);
         }
 
+        public static MCP CreateSetGroupTypeCmd(int groupId, McpGroupType type)
+        {
+            return MCP.Create(McpCommand.SetValue, groupId, (int)type);
+        }
+
+        public static MCP CreateSetRequestableCmd(int groupId, int portId)
+        {
+            return MCP.Create(McpCommand.SetValue, groupId + 16, portId);
+        }
+
         public static MCP CreateSetGroupedPortsCmd(int groupId, IList<byte> portIds)
         {
             return MCP.Create(McpCommand.SetGroupedPorts, groupId, portIds.ToArray());
         }
 
-        public static MCP CreateSetValueCmd(int address, int value)
-        {
-            return MCP.Create(McpCommand.SetValue, address, value);
-        }
+        //public static MCP CreateSetValueCmd(int address, int value)
+        //{
+        //    return MCP.Create(McpCommand.SetValue, address, value);
+        //}
 
         public static MCP CreateGetTransitionCmd(int newId)
         {
