@@ -102,10 +102,7 @@ namespace HoermannAdapter.Hoermann
                     // remember access token to be used on consecutive calls
                     this._token = BitConverter.ToUInt32(test.Payload, 1);
 
-                    if (OnLogin != null)
-                    {
-                        this.OnLogin(this, EventArgs.Empty);
-                    }
+                    this.OnLogin?.Invoke(this, EventArgs.Empty);
 
                     //var msg = MCP.CreateJmcpGetValuesCmd();
                     //var msg = MCP.CreateGetGroupsCmd();
@@ -117,31 +114,19 @@ namespace HoermannAdapter.Hoermann
                 }
                 else if (test.Command == McpCommand.Logout)
                 {
-                    if (OnLogout != null)
-                    {
-                        this.OnLogout(this, EventArgs.Empty);
-                    }
+                    this.OnLogout?.Invoke(this, EventArgs.Empty);
                 }
                 else if(test.Command == McpCommand.Jmcp)
                 {
-                    if(OnJmcpMessage != null)
-                    {
-                        this.OnJmcpMessage(this, new JmcpEventArgs(test));
-                    }
+                    this.OnJmcpMessage?.Invoke(this, new JmcpEventArgs(test));
                 }
                 else if (test.Command == McpCommand.HmGetTransition)
                 {
-                    if (OnTransition != null)
-                    {
-                        this.OnTransition(this, new TransitionEventArgs(test));
-                    }
+                    this.OnTransition?.Invoke(this, new TransitionEventArgs(test));
                 }
                 else if (test.Command == McpCommand.Error)
                 {
-                    if (OnError != null)
-                    {
-                        this.OnError(this, EventArgs.Empty);
-                    }
+                    this.OnError?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
