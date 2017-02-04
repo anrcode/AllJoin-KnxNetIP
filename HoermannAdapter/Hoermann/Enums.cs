@@ -58,8 +58,7 @@ namespace HoermannAdapter.Hoermann
         Door = 6,
         Light = 7,
         Other = 8,
-        Jack = 9,
-
+        Jack = 9
     }
 
     public enum McpPortType : int
