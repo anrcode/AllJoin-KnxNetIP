@@ -24,8 +24,8 @@ namespace KnxNetIPAdapter.KnxNet
         private byte _rxSequenceNo = 0;
         private bool _threeLevelGroupAssigning = true;
 
-        public event EventHandler<EventArgs> KnxConnected;
-        public event EventHandler<EventArgs> KnxDisconnected;
+        public event EventHandler<EventArgs> Connected;
+        public event EventHandler<EventArgs> Disconnected;
         public event EventHandler<KnxEventArgs> KnxEvent;
         public event EventHandler<KnxEventArgs> KnxStatus;
 
@@ -64,7 +64,7 @@ namespace KnxNetIPAdapter.KnxNet
             _isConnected = false;
 
             this.SendDisconnectRequest();
-            this.KnxDisconnected?.Invoke(this, EventArgs.Empty);
+            this.Disconnected?.Invoke(this, EventArgs.Empty);
 
             _udpClient?.Dispose();
             _udpClient = null;
@@ -211,7 +211,7 @@ namespace KnxNetIPAdapter.KnxNet
             _channelId = knxDatagram.channel_id;
             _sequenceNo = 0;
 
-            this.KnxConnected?.Invoke(this, EventArgs.Empty);
+            this.Connected?.Invoke(this, EventArgs.Empty);
         }
 
         private async void SendDisconnectRequest()
@@ -250,7 +250,7 @@ namespace KnxNetIPAdapter.KnxNet
                 return;
             }
 
-            this.KnxDisconnected?.Invoke(this, EventArgs.Empty);
+            this.Disconnected?.Invoke(this, EventArgs.Empty);
         }
 
         private async void SendStateRequest()

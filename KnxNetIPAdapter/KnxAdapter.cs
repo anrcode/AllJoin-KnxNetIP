@@ -104,11 +104,12 @@ namespace KnxNetIPAdapter
                     if (device != null)
                     {
                         devices.Add(device);
-                        conn.KnxDisconnected += (object s, EventArgs args) =>
+                        conn.Disconnected += (object s, EventArgs args) =>
                         {
                             this.NotifyDeviceRemoval(device);
                             devices.Remove(device);
                         };
+
                         await device.AquireCurrentState();
                         this.NotifyDeviceArrival(device);
                     }

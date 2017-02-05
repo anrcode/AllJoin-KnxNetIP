@@ -37,7 +37,7 @@ namespace OnkyoAdapter
             {
                 var device = new OnkyoDevice(this, conn, "TXXXX", "Onkyo", "TXXX2", "1.0.0.0", e.DeviceId, "Onkyo Receiver");
                 devices.Add(device);
-                conn.ConnectionClosed += (object s, EventArgs args) => {
+                conn.ConnectionLost += (object s, EventArgs args) => {
                     this.NotifyDeviceRemoval(device);
                     devices.Remove(device);
                 };

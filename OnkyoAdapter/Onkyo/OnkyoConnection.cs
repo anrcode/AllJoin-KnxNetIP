@@ -19,11 +19,28 @@ namespace OnkyoAdapter.Onkyo
         private TcpClient _socketClient = new TcpClient();
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
-        public event EventHandler ConnectionClosed;
+        public event EventHandler Connected;
+        public event EventHandler Disconnected;
+        public event EventHandler ConnectionLost;
 
         #region Public Methods / Properties
 
         public DeviceInfo CurrentDevice { get; private set; }
+
+        public OnkyoConnection()
+        {
+            this._socketClient.Connected += (object sender, EventArgs e) => {
+                this.Connected?.Invoke(this, EventArgs.Empty);
+            };
+
+            this._socketClient.Disconnected += (object sender, EventArgs e) => {
+                this.Disconnected?.Invoke(this, EventArgs.Empty);
+            };
+
+            this._socketClient.Error += (object sender, EventArgs e) => {
+                this.ConnectionLost?.Invoke(this, EventArgs.Empty);
+            };
+        }
 
         public void Connect(DeviceInfo poDevice)
         {

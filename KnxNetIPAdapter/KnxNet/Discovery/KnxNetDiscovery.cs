@@ -57,11 +57,11 @@ namespace KnxNetIPAdapter.KnxNet.Discovery
             }
 
             var conn = new KnxNetTunnelingConnection();
-            conn.KnxConnected += (object s, EventArgs args) =>
+            conn.Connected += (object s, EventArgs args) =>
             {
                 this.AddDevice(ip, conn);
             };
-            conn.KnxDisconnected += (object s, EventArgs args) =>
+            conn.Disconnected += (object s, EventArgs args) =>
             {
                 this.RemoveDevice(ip);
             };
