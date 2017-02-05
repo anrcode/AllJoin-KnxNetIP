@@ -44,7 +44,7 @@ namespace OnkyoAdapter.Onkyo.Discovery
 
                     var conn = new OnkyoConnection();
                     conn.Connect(loDevice);
-                    conn.ConnectionClosed += (object s, EventArgs args) =>
+                    conn.ConnectionLost += (object s, EventArgs args) =>
                     {
                         this.RemoveDevice(loDevice.MacAddress);
                     };
