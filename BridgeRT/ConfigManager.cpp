@@ -27,9 +27,9 @@
 #include "AllJoynHelper.h"
 
 #include "ConfigManager.h"
+#include "BridgeUtils.h"
 
 using namespace BridgeRT;
-using namespace DsbCommon;
 
 static const uint32_t SESSION_LINK_TIMEOUT = 30;        // seconds
 const StringReference BRIDGE_CONFIG_FILE(L"BridgeConfig.xml");
@@ -50,7 +50,6 @@ ConfigManager::~ConfigManager()
 int32 ConfigManager::Initialize(DsbBridge ^bridge)
 {
     int32 hr = S_OK;
-    AutoLock bridgeLocker(&DsbBridge::SingleInstance()->GetLock(), true);
 
     if (nullptr == bridge)
     {
@@ -72,7 +71,6 @@ Leave:
 int32 ConfigManager::Shutdown()
 {
     int32 hr = S_OK;
-    AutoLock bridgeLocker(&DsbBridge::SingleInstance()->GetLock(), true);
 
     ShutdownAllJoyn();
     m_adapter = nullptr;
@@ -337,7 +335,6 @@ Leave:
 QStatus ConfigManager::InitializeCSPBusObjects()
 {
     QStatus status = ER_OK;
-    AutoLock bridgeLocker(&DsbBridge::SingleInstance()->GetLock(), true);
 
     // init CSP related bus objects if this isn't an update
     //-------------------------------------------------------
@@ -489,7 +486,7 @@ HRESULT ConfigManager::SetDeviceConfig(_In_ std::wstring &tempFileName, _Out_ HA
     {
         if (nullptr != m_parent)
         {
-            AutoLock bridgeLocker(&DsbBridge::SingleInstance()->GetLock(), true);
+            AutoLock bridgeLocker(DsbBridge::SingleInstance()->GetLock());
             updateStatus = m_parent->InitializeDevices(true);
             if (updateStatus != ER_OK)
             {

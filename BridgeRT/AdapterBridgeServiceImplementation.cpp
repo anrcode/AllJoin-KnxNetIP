@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2015, Microsoft Corporation
 //
 // Permission to use, copy, modify, and/or distribute this software for any
@@ -14,12 +14,5 @@
 // IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 //
 
-#pragma once
-
-#include "targetver.h"
-
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-
-#include <windows.h>
+#include "pch.h"
+#include "AdapterBridgeServiceImplementation.h"

@@ -43,6 +43,7 @@ DeviceMain::~DeviceMain()
 QStatus DeviceMain::Initialize(BridgeDevice ^parent)
 {
     QStatus status = ER_OK;
+    std::string tempString;
 
     // sanity check
     if (nullptr == parent)
@@ -54,8 +55,8 @@ QStatus DeviceMain::Initialize(BridgeDevice ^parent)
     m_parent = parent;
 
     // build bus object path
-    m_busObjectPath = "/";
-    AllJoynHelper::BuildBusObjectName(parent->GetAdapterDevice()->Name, m_busObjectPath);
+    AllJoynHelper::EncodeBusObjectName(parent->GetAdapterDevice()->Name, tempString);
+    m_busObjectPath = "/" + tempString;
 
     // create alljoyn bus object and register it
     m_AJBusObject = alljoyn_busobject_create(m_busObjectPath.c_str(), QCC_FALSE, nullptr, nullptr);
@@ -379,5 +380,5 @@ void DeviceMain::HandleSignal(_In_ IAdapterSignal ^adapterSignal)
     }
 
     // send signal to alljoyn
-    signal->second->SendSignal(adapterSignal);
+    signal->second->SendSignal();
 }

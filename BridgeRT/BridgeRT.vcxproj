@@ -33,54 +33,54 @@
     <RootNamespace>BridgeRT</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.10586.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.16299.0</WindowsTargetPlatformMinVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <LogSDKReferenceResolutionErrorsAsWarnings>true</LogSDKReferenceResolutionErrorsAsWarnings>
-    <UseAppLocalVCLibs>true</UseAppLocalVCLibs>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '14.0'">
+    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '15.0'">
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -111,11 +111,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <LibraryPath>$(WindowsSDK_LibraryPath)\arm;$(LibraryPath)</LibraryPath>
+    <!--    <LibraryPath>$(WindowsSDK_LibraryPath)\arm;$(LibraryPath)</LibraryPath> -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <GenerateManifest>false</GenerateManifest>
-    <LibraryPath>$(WindowsSDK_LibraryPath)\arm;$(LibraryPath)</LibraryPath>
+    <!--    <LibraryPath>$(WindowsSDK_LibraryPath)\arm;$(LibraryPath)</LibraryPath> -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
@@ -130,9 +130,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204;4267;</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;$(ProjectDir)..\BackgroundHost\BackgroundHost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Async</ExceptionHandling>
@@ -155,9 +155,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204;4267;</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;$(ProjectDir)..\BackgroundHost\BackgroundHost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <ExceptionHandling>Async</ExceptionHandling>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -176,9 +176,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /ZH:SHA_256 /GUARD:CF %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204;4267;</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;$(ProjectDir)..\BackgroundHost\BackgroundHost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
@@ -187,6 +187,7 @@
       <AdditionalDependencies>runtimeobject.lib;msajapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalOptions>/DYNAMICBASE /GUARD:CF %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -196,9 +197,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204;4267;</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;$(ProjectDir)..\BackgroundHost\BackgroundHost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
@@ -218,9 +219,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204;4267;</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;$(ProjectDir)..\BackgroundHost\BackgroundHost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -239,9 +240,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>28204;4267;</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\Common;$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WindowsSdkDir_UAP)\Include\$(TargetPlatformResourceVersion)\um\AllJoyn;$(ProjectDir)..\BackgroundHost\BackgroundHost;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
@@ -253,6 +254,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AdapterBridgeServiceImplementation.h" />
     <ClInclude Include="AdapterConstants.h" />
     <ClInclude Include="AllJoynAboutIcon.h" />
     <ClInclude Include="ILSFHandler.h" />
@@ -262,7 +264,9 @@
     <ClInclude Include="LampState.h" />
     <ClInclude Include="LSF.h" />
     <ClInclude Include="LSFConsts.h" />
+    <ClInclude Include="LSFEnums.h" />
     <ClInclude Include="LSFSignalHandler.h" />
+    <ClInclude Include="BridgeUtils.h" />
     <ClInclude Include="WidgetAction.h" />
     <ClInclude Include="AllJoynAbout.h" />
     <ClInclude Include="AllJoynFileTransfer.h" />
@@ -297,6 +301,7 @@
     <ClInclude Include="WidgetSignalHandler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AdapterBridgeServiceImplementation.cpp" />
     <ClCompile Include="AllJoynAboutIcon.cpp" />
     <ClCompile Include="LampDetails.cpp" />
     <ClCompile Include="LampParameters.cpp" />
@@ -304,6 +309,7 @@
     <ClCompile Include="LampState.cpp" />
     <ClCompile Include="LSF.cpp" />
     <ClCompile Include="LSFSignalHandler.cpp" />
+    <ClCompile Include="BridgeUtils.cpp" />
     <ClCompile Include="WidgetAction.cpp" />
     <ClCompile Include="AllJoynAbout.cpp" />
     <ClCompile Include="AllJoynFileTransfer.cpp" />
@@ -340,8 +346,8 @@
     <ClCompile Include="WidgetSignalHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.vcxproj">
-      <Project>{4d445253-3bba-455d-b324-ece00d4fe480}</Project>
+    <ProjectReference Include="..\BackgroundHost\BackgroundHost.vcxproj">
+      <Project>{98b5350d-3b67-4109-9cd5-1a675295c461}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

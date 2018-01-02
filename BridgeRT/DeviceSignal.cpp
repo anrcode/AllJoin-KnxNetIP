@@ -17,7 +17,7 @@
 #include "pch.h"
 
 #include <sstream>
-
+#include "BridgeUtils.h"
 #include "DeviceMain.h"
 #include "DeviceSignal.h"
 #include "AllJoynHelper.h"
@@ -29,7 +29,7 @@ using namespace Windows::Foundation;
 
 using namespace BridgeRT;
 using namespace std;
-using namespace DsbCommon;
+
 
 DeviceSignal::DeviceSignal()
     : m_adapterSignal(nullptr)
@@ -89,19 +89,13 @@ leave:
     return status;
 }
 
-void DeviceSignal::SendSignal(_In_ IAdapterSignal ^adapterSignal)
+void DeviceSignal::SendSignal()
 {
     QStatus status = ER_OK;
     size_t nbOfArgs = 0;
     alljoyn_msgarg args = NULL;
     alljoyn_interfacedescription_member signalDescription;
     QCC_BOOL signalFound = QCC_FALSE;
-
-    if (nullptr != adapterSignal)
-    {
-        // can't do anything
-        return;
-    }
 
     // create out arguments if necessary
     if (m_adapterSignal->Params->Size != 0)
@@ -168,7 +162,7 @@ QStatus DeviceSignal::SetName(Platform::String ^name)
         goto leave;
     }
 
-    AllJoynHelper::BuildPropertyOrMethodOrSignalName(name, m_exposedName);
+    AllJoynHelper::EncodePropertyOrMethodOrSignalName(name, m_exposedName);
     if (!m_parent->IsSignalNameUnique(m_exposedName))
     {
         // append unique id
@@ -237,9 +231,9 @@ QStatus DeviceSignal::BuildSignature()
         // add parameter name to parameter list
         if (0 != m_parameterNames.length())
         {
-            m_parameterNames == ",";
+            m_parameterNames += ",";
         }
-        m_parameterNames += To_Ascii_String(signalParam->Name->Data());
+        m_parameterNames += ConvertTo<std::string>(signalParam->Name->Data());
         m_parameterNames += hint;
     }
 

@@ -78,6 +78,7 @@ namespace HoermannAdapter.Hoermann
 
     public enum McpPortState : int
     {
+        Unk = 255
     }
 
     public enum McpWifiState : int
