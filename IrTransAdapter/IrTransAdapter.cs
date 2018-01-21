@@ -25,7 +25,7 @@ namespace IrTransAdapter
 
         private void IrTransDiscovery_DeviceDiscovered(object sender, SparkAlljoyn.Discovery.AdapterDiscoveryEventArgs e)
         {
-            var conn = e.Device as IrTransConnection;
+            var conn = e.Device as IrTransClient;
             conn.Connect();
 
             var device = new IrTransDevice(this, conn, "TXXXX", "IrTrans", "IrTrans", "1.0.0.0", e.DeviceId, "IrTrans");

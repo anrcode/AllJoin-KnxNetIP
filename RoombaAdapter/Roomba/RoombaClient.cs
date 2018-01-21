@@ -11,33 +11,36 @@ using Windows.Networking;
 
 namespace RoombaAdapter.Roomba
 {
-    internal class RoombaConnection
+    internal class RoombaClient
     {
-        private HostName _hostname;
-        private string _blid;
+        private HostName _remoteHost;
+        private string _remoteService;
+        private string _user;
         private string _pass;
-        private StringBuilder _log = new StringBuilder();
-
+   
         private MqttClient _client = null;
         private RoombaState _state = new RoombaState();
+
+        private StringBuilder _log = new StringBuilder();
 
         public event RoombaStateEventHandler StateChanged;
         public event EventHandler Disconnected;
         public event EventHandler ConnectionLost;
 
 
-        public RoombaConnection(HostName hostname, string blid, string pass)
+        public RoombaClient(HostName remoteHost, string remoteService, string user, string pass)
         {
-            _hostname = hostname;
-            _blid = blid;
+            _remoteHost = remoteHost;
+            _remoteService = remoteService;
+            _user = user;
             _pass = pass;           
         }
 
         public void Connect()
         {
-            _client = new MqttClient(_hostname.CanonicalName, MqttSettings.MQTT_BROKER_DEFAULT_SSL_PORT, true, MqttSslProtocols.TLSv1_0, (a, b, c, d) => { return true; }, null);
+            _client = new MqttClient(_remoteHost.CanonicalName, MqttSettings.MQTT_BROKER_DEFAULT_SSL_PORT, true, MqttSslProtocols.TLSv1_0, (a, b, c, d) => { return true; }, null);
 
-            byte t = _client.Connect(_blid, _blid, _pass);
+            byte t = _client.Connect(_user, _user, _pass);
             _client.MqttMsgPublishReceived += Roomba_MessageReceived;
             _client.ConnectionClosed += Roomba_ConnectionClosed;
             ushort x3 = _client.Subscribe(new string[] { "#" }, new byte[] { 1 });

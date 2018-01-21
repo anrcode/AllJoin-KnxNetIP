@@ -114,7 +114,7 @@
     <Compile Include="RoombaAdapter.cs" />
     <Compile Include="RoombaDevice.cs" />
     <Compile Include="Roomba\Discovery\RoombaDiscovery.cs" />
-    <Compile Include="Roomba\RoombaConnection.cs" />
+    <Compile Include="Roomba\RoombaClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roomba\RoombaState.cs" />
     <Compile Include="WrappedAdapter.cs" />

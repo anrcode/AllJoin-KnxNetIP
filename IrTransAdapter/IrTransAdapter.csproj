@@ -114,7 +114,7 @@
     <Compile Include="IrTransAdapter.cs" />
     <Compile Include="IrTransDevice.cs" />
     <Compile Include="IrTrans\Discovery\IrTransDiscovery.cs" />
-    <Compile Include="IrTrans\IrTransConnection.cs" />
+    <Compile Include="IrTrans\IrTransClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WrappedAdapter.cs" />
   </ItemGroup>

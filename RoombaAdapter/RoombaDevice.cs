@@ -14,9 +14,9 @@ namespace RoombaAdapter
     //
     class RoombaDevice : BridgeAdapterDevice<RoombaAdapter>
     {
-        private RoombaConnection _conn;
+        private RoombaClient _conn;
 
-        internal RoombaDevice(RoombaAdapter adapter, RoombaConnection conn, string Name, string VendorName, string Model, string Version, string SerialNumber, string Description)
+        internal RoombaDevice(RoombaAdapter adapter, RoombaClient conn, string Name, string VendorName, string Model, string Version, string SerialNumber, string Description)
             : base(adapter, Name, VendorName, Model, Version, SerialNumber, Description)
         {
             _conn = conn;
@@ -26,7 +26,7 @@ namespace RoombaAdapter
         {
             this.Properties.Clear();
 
-            var statusProp = new BridgeAdapterProperty<RoombaDevice>(this, "IrTrans", "com.allseen.SmartHome.IrTrans");
+            var statusProp = new BridgeAdapterProperty<RoombaDevice>(this, "MyRoomba", "com.allseen.SmartHome.Roomba");
             statusProp.Attributes.Add(new BridgeAdapterAttribute("EnergyTotal", 0.0, E_ACCESS_TYPE.ACCESS_READ) { COVBehavior = SignalBehavior.Always });
             statusProp.Attributes.Add(new BridgeAdapterAttribute("EnergyHi", 0.0, E_ACCESS_TYPE.ACCESS_READ) { COVBehavior = SignalBehavior.Always });
             statusProp.Attributes.Add(new BridgeAdapterAttribute("EnergyLo", 0.0, E_ACCESS_TYPE.ACCESS_READ) { COVBehavior = SignalBehavior.Always });
@@ -37,6 +37,7 @@ namespace RoombaAdapter
 
         virtual internal async Task<bool> AquireCurrentState()
         {
+            await Task.Delay(3000);
             return true;
         }
 

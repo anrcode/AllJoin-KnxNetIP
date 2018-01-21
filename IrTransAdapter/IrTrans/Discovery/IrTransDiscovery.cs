@@ -63,7 +63,7 @@ namespace IrTransAdapter.IrTrans.Discovery
                 return;
             }
 
-            var conn = new IrTransConnection(e.RemoteAddress);
+            var conn = new IrTransClient(e.RemoteAddress, "21000");
             this.AddDevice(mac, conn);
         }
     }

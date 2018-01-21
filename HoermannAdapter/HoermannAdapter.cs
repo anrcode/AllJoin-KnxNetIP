@@ -28,7 +28,7 @@ namespace HoermannAdapter
 
         private void HoermannDiscovery_DeviceDiscovered(object sender, SparkAlljoyn.Discovery.AdapterDiscoveryEventArgs e)
         {
-            var conn = e.Device as HoermannConnection;
+            var conn = e.Device as HoermannClient;
             conn.Connect();
 
             var device = new HoermannDevice(this, conn, "Hoermann", "Hoermann", "TXXX2", "1.0.0.0", e.DeviceId, "Hoermann");

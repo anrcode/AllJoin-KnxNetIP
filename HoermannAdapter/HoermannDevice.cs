@@ -14,9 +14,9 @@ namespace HoermannAdapter
     //
     class HoermannDevice : BridgeAdapterDevice<HoermannAdapter>
     {
-        private HoermannConnection _conn;
+        private HoermannClient _conn;
 
-        internal HoermannDevice(HoermannAdapter adapter, HoermannConnection conn, string Name, string VendorName, string Model, string Version, string SerialNumber, string Description)
+        internal HoermannDevice(HoermannAdapter adapter, HoermannClient conn, string Name, string VendorName, string Model, string Version, string SerialNumber, string Description)
             : base(adapter, Name, VendorName, Model, Version, SerialNumber, Description)
         {
             _conn = conn;

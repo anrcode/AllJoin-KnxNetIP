@@ -9,9 +9,9 @@ namespace IrTransAdapter
 {
     class IrTransDevice : BridgeAdapterDevice<IrTransAdapter>
     {
-        private IrTransConnection _conn;
+        private IrTransClient _conn;
 
-        internal IrTransDevice(IrTransAdapter adapter, IrTransConnection conn, string Name, string VendorName, string Model, string Version, string SerialNumber, string Description) 
+        internal IrTransDevice(IrTransAdapter adapter, IrTransClient conn, string Name, string VendorName, string Model, string Version, string SerialNumber, string Description) 
             : base(adapter, Name, VendorName, Model, Version, SerialNumber, Description)
         {
             _conn = conn;

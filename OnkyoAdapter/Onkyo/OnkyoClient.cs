@@ -2,6 +2,7 @@
 using Spark.Universal.Net;
 using System.Threading.Tasks;
 using System.Linq;
+using Windows.Networking;
 
 namespace OnkyoAdapter.Onkyo
 {
@@ -14,8 +15,10 @@ namespace OnkyoAdapter.Onkyo
         public string Message { get; private set; }
     }
 
-    internal class OnkyoConnection
+    internal class OnkyoClient
     {
+        private HostName _remoteHost;
+        private string _remoteService;
         private TcpClient _socketClient = new TcpClient();
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
@@ -25,29 +28,29 @@ namespace OnkyoAdapter.Onkyo
 
         #region Public Methods / Properties
 
-        public DeviceInfo CurrentDevice { get; private set; }
-
-        public OnkyoConnection()
+        public OnkyoClient(HostName remoteHost, string remoteService)
         {
-            this._socketClient.Connected += (object sender, EventArgs e) => {
+            _remoteHost = remoteHost;
+            _remoteService = remoteService;
+
+            _socketClient.Connected += (object sender, EventArgs e) => {
                 this.Connected?.Invoke(this, EventArgs.Empty);
             };
 
-            this._socketClient.Disconnected += (object sender, EventArgs e) => {
+            _socketClient.Disconnected += (object sender, EventArgs e) => {
                 this.Disconnected?.Invoke(this, EventArgs.Empty);
             };
 
-            this._socketClient.Error += (object sender, EventArgs e) => {
+            _socketClient.Error += (object sender, EventArgs e) => {
                 this.ConnectionLost?.Invoke(this, EventArgs.Empty);
             };
         }
 
-        public void Connect(DeviceInfo poDevice)
+        public void Connect()
         {
-            this.CurrentDevice = poDevice;
             this.Disconnect();
 
-            this._socketClient.Connect(this.CurrentDevice.HostName, this.CurrentDevice.ServiceName);
+            this._socketClient.Connect(_remoteHost, _remoteService);
 
             Task.Run(this.SocketListener);
         }

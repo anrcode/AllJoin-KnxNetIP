@@ -7,15 +7,17 @@ using Spark.Universal.Net;
 
 namespace IrTransAdapter.IrTrans
 {
-    internal class IrTransConnection
+    internal class IrTransClient
     {
-        private HostName _hostname;
+        private HostName _remoteHost;
+        private string _remoteService;
         private TcpClient _connection = new TcpClient();
         private bool _isConnected = false;
 
-        public IrTransConnection(HostName hostname)
+        public IrTransClient(HostName remoteHost, string remoteService)
         {
-            _hostname = hostname;
+            _remoteHost = remoteHost;
+            _remoteService = remoteService;
 
             _connection.Error += (object sender, EventArgs e) =>
             {
@@ -25,7 +27,7 @@ namespace IrTransAdapter.IrTrans
 
         public void Connect()
         {
-            _connection.Connect(_hostname, "21000");
+            _connection.Connect(_remoteHost, _remoteService);
             _isConnected = true;
         }
 

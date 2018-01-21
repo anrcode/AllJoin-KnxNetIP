@@ -44,7 +44,7 @@ namespace HoermannAdapter.Hoermann.Discovery
                 return;
             }
 
-            var conn = new HoermannConnection(e.RemoteAddress, mac);
+            var conn = new HoermannClient(e.RemoteAddress, "4000", mac);
             this.AddDevice(mac, conn);         
         }
 

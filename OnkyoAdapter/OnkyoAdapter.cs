@@ -30,11 +30,11 @@ namespace OnkyoAdapter
 
         private void OnkyoDiscovery_DeviceDiscovered(object sender, AdapterDiscoveryEventArgs e)
         {
-            var conn = e.Device as OnkyoConnection;
-            //conn.Connect();
+            var conn = e.Device as OnkyoClient;
 
             Task.Factory.StartNew(async () =>
             {
+                conn.Connect();
                 var device = new OnkyoDevice(this, conn, "TXXXX", "Onkyo", "TXXX2", "1.0.0.0", e.DeviceId, "Onkyo Receiver");
                 devices.Add(device);
                 conn.ConnectionLost += (object s, EventArgs args) => {

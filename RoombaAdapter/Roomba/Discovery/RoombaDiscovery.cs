@@ -27,8 +27,6 @@ namespace RoombaAdapter.Roomba.Discovery
                 udpClient.Dispose();
                 udpClient = null;
             });
-
-            Task.Delay(50000);
         }
 
         private void SocketDataReceived(object sender, DataReceivedEventArgs e)
@@ -42,7 +40,8 @@ namespace RoombaAdapter.Roomba.Discovery
                 return;
             }
 
-            var mac = device.GetNamedString("mac");
+            var macAddr = device.GetNamedString("mac");
+            string mac = macAddr.Replace(":", "");
             if (this.AlreadyDiscovered(mac))
             {
                 return;
@@ -50,12 +49,11 @@ namespace RoombaAdapter.Roomba.Discovery
 
             var blid = hostName.Split('-')[1];
             var pass = ":1:1515862749:YYxDNy5nydFOrI88";
-            var conn = new RoombaConnection(e.RemoteAddress, blid, pass);
+            var conn = new RoombaClient(e.RemoteAddress, "8883", blid, pass);
             conn.ConnectionLost += (object s, EventArgs args) =>
-             {
-                 this.RemoveDevice(mac);
-             };
-            conn.Connect();
+            {
+                this.RemoveDevice(mac);
+            };
             this.AddDevice(mac, conn);         
         }
     }

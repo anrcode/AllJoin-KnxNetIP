@@ -10,9 +10,9 @@ namespace OnkyoAdapter
 {
     class OnkyoDevice : BridgeAdapterDevice<OnkyoAdapter>
     {
-        private OnkyoConnection _conn;
+        private OnkyoClient _conn;
 
-        internal OnkyoDevice(OnkyoAdapter adapter, OnkyoConnection conn, string Name, string VendorName, string Model, string Version, string SerialNumber, string Description) 
+        internal OnkyoDevice(OnkyoAdapter adapter, OnkyoClient conn, string Name, string VendorName, string Model, string Version, string SerialNumber, string Description) 
             : base(adapter, Name, VendorName, Model, Version, SerialNumber, Description)
         {
             _conn = conn;

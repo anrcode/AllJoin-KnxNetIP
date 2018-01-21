@@ -8,9 +8,10 @@ using Spark.Universal.Net;
 
 namespace HoermannAdapter.Hoermann
 {
-    internal class HoermannConnection
+    internal class HoermannClient
     {
-        private HostName _hostname;
+        private HostName _remoteHost;
+        private string _remoteService;
         private string _gatewayMac;
         private TcpClient _client = new TcpClient();
         private string _clientId = "000000000000";
@@ -24,15 +25,16 @@ namespace HoermannAdapter.Hoermann
         public event EventHandler OnError;
 
 
-        public HoermannConnection(HostName hostname, string gatewayMac)
+        public HoermannClient(HostName remoteHost, string remoteService, string gatewayMac)
         {
-            _hostname = hostname;
+            _remoteHost = remoteHost;
+            _remoteService = remoteService;
             _gatewayMac = gatewayMac;
         }
 
         public void Connect()
         {       
-            _client.Connect(_hostname, "4000");
+            _client.Connect(_remoteHost, _remoteService);
             Task.Run(SocketReader);    
         }
 

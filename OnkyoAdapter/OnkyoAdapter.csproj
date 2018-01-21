@@ -137,7 +137,7 @@
     <Compile Include="Onkyo\Command\SubwooferLevel.cs" />
     <Compile Include="Onkyo\Command\Tone.cs" />
     <Compile Include="Onkyo\Command\Tuning.cs" />
-    <Compile Include="Onkyo\OnkyoConnection.cs" />
+    <Compile Include="Onkyo\OnkyoClient.cs" />
     <Compile Include="Onkyo\DescriptionAttribute.cs" />
     <Compile Include="Onkyo\DeviceInfo.cs" />
     <Compile Include="Onkyo\Enums.cs" />

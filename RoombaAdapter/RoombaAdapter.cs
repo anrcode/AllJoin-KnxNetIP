@@ -4,7 +4,7 @@ using BridgeRT;
 using SparkAlljoyn;
 using RoombaAdapter.Roomba;
 using RoombaAdapter.Roomba.Discovery;
-
+using System.Threading.Tasks;
 
 namespace RoombaAdapter
 {
@@ -19,27 +19,28 @@ namespace RoombaAdapter
 
         override public uint Initialize()
         {
-            RoombaDiscovery.DeviceDiscovered += RoombaDiscovery_DeviceDiscovered;
-            RoombaDiscovery.DeviceRemoved += RoombaDiscovery_DeviceRemoved;
+            RoombaDiscovery.DeviceDiscovered += Roomba_DeviceDiscovered;
+            RoombaDiscovery.DeviceRemoved += Roomba_DeviceRemoved;
             _discovery = new RoombaDiscovery();
 
             return ERROR_SUCCESS;
         }
 
-        private void RoombaDiscovery_DeviceDiscovered(object sender, SparkAlljoyn.Discovery.AdapterDiscoveryEventArgs e)
+        private void Roomba_DeviceDiscovered(object sender, SparkAlljoyn.Discovery.AdapterDiscoveryEventArgs e)
         {
-            var conn = e.Device as RoombaConnection;
-            conn.Connect();
-
-            var device = new RoombaDevice(this, conn, "Roomba", "Roomba", "Roomba", "1.0.0.0", e.DeviceId, "Roomba");
-            devices.Add(device);
-            this.NotifyDeviceArrival(device);
-
-            // TEMP
-            //conn.SendMessage(msg);
+            var conn = e.Device as RoombaClient;
+           
+            Task.Factory.StartNew(async () =>
+            {
+                conn.Connect();
+                var device = new RoombaDevice(this, conn, "Roomba", "Roomba", "Roomba", "1.0.0.0", e.DeviceId, "Roomba");
+                devices.Add(device);
+                await device.AquireCurrentState();
+                this.NotifyDeviceArrival(device);
+            });
         }
 
-        private void RoombaDiscovery_DeviceRemoved(object sender, SparkAlljoyn.Discovery.AdapterDiscoveryEventArgs e)
+        private void Roomba_DeviceRemoved(object sender, SparkAlljoyn.Discovery.AdapterDiscoveryEventArgs e)
         {
             var matchingDevices = devices.Where(d => d.SerialNumber == e.DeviceId).ToList();
             foreach (var device in matchingDevices)
