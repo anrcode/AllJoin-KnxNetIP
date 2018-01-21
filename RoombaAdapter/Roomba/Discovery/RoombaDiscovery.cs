@@ -13,49 +13,10 @@ namespace RoombaAdapter.Roomba.Discovery
 
         }
 
-        private void SocketDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            string response = Encoding.UTF8.GetString(e.Data);
-
-            var device = JsonObject.Parse(response);
-
-            var xmldoc = new System.Xml.XmlDocument();
-            xmldoc.LoadXml(response);
-
-            if (xmldoc.DocumentElement.Name != "LogicBox")
-            {
-                return;
-            }
-
-            var protoAttr = device["ver"].GetString();
-            if ((protoAttr == null) || (protoAttr != "2"))
-            {
-                return;
-            }
-
-            var macAttr = device["mac"].GetString();
-            if (macAttr == null)
-            {
-                return;
-            }
-
-            var hostName = e.RemoteAddress;
-            string mac = macAttr.Replace(":", "");
-
-            if (this.AlreadyDiscovered(mac))
-            {
-                return;
-            }
-
-            var conn = new RoombaConnection(e.RemoteAddress, mac);
-            this.AddDevice(mac, conn);         
-        }
-
         protected override void Discover()
         {
             var udpClient = new UdpClient();
             udpClient.DataReceived += SocketDataReceived;
-            udpClient.BindSocket("5678");
 
             Task.Run(async () =>
             {
@@ -66,6 +27,36 @@ namespace RoombaAdapter.Roomba.Discovery
                 udpClient.Dispose();
                 udpClient = null;
             });
+
+            Task.Delay(50000);
+        }
+
+        private void SocketDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            string response = Encoding.UTF8.GetString(e.Data);
+            var device = JsonObject.Parse(response);
+
+            var hostName = device.GetNamedString("hostname");
+            if(hostName.Split('-')[0] != "Roomba")
+            {
+                return;
+            }
+
+            var mac = device.GetNamedString("mac");
+            if (this.AlreadyDiscovered(mac))
+            {
+                return;
+            }
+
+            var blid = hostName.Split('-')[1];
+            var pass = ":1:1515862749:YYxDNy5nydFOrI88";
+            var conn = new RoombaConnection(e.RemoteAddress, blid, pass);
+            conn.ConnectionLost += (object s, EventArgs args) =>
+             {
+                 this.RemoveDevice(mac);
+             };
+            conn.Connect();
+            this.AddDevice(mac, conn);         
         }
     }
 }

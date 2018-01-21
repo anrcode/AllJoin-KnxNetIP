@@ -348,6 +348,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BackgroundHost\BackgroundHost.vcxproj">
       <Project>{98b5350d-3b67-4109-9cd5-1a675295c461}</Project>
+      <Private>false</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

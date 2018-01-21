@@ -36,8 +36,7 @@ namespace RoombaAdapter
             this.NotifyDeviceArrival(device);
 
             // TEMP
-            var msg = MCP.CreateLoginCmd("admin", "0000");
-            conn.SendMessage(msg);
+            //conn.SendMessage(msg);
         }
 
         private void RoombaDiscovery_DeviceRemoved(object sender, SparkAlljoyn.Discovery.AdapterDiscoveryEventArgs e)

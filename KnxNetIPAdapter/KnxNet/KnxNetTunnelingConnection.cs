@@ -135,7 +135,7 @@ namespace KnxNetIPAdapter.KnxNet
             await _udpClient?.Send(datagram);
         }
 
-        private void UdpClientDataReceived(object sender, DataReceivedEventArgs e)
+        private void UdpClientDataReceived(object sender, Spark.Universal.Net.DataReceivedEventArgs e)
         {
             // parse datagram 
             byte[] datagram = e.Data;

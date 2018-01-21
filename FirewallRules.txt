@@ -1,0 +1,2 @@
+Set-NetFirewallRule -Name ‘AllJoyn-Router-In-UDP’ -Profile any
+Set-NetFirewallRule -Name ‘AllJoyn-Router-In-TCP’ -Profile any

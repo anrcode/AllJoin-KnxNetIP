@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10" IgnorableNamespaces="uap mp iot">
-  <Identity Name="KnxNetIPBridgePackage" Publisher="CN=win10" Version="1.0.0.0" />
+  <Identity Name="c1d75137-135f-4872-1234-2b532ea47d86" Publisher="CN=win10" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="d47b6d19-bba9-4ce8-a054-3b729533d4e5" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>KnxNetIPBridge</DisplayName>

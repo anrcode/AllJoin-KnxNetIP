@@ -42,12 +42,12 @@ namespace OnkyoAdapter.Onkyo.Discovery
                         return;
                     }
 
-                    var conn = new OnkyoConnection();
-                    conn.Connect(loDevice);
+                    var conn = new OnkyoConnection();                
                     conn.ConnectionLost += (object s, EventArgs args) =>
                     {
                         this.RemoveDevice(loDevice.MacAddress);
                     };
+                    conn.Connect(loDevice);
                     this.AddDevice(loDevice.MacAddress, conn);
                 }
             }

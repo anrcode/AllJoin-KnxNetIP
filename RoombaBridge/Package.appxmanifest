@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10" IgnorableNamespaces="uap mp iot">
-  <Identity Name="RoombaBridgePackage" Publisher="CN=win10" Version="1.0.0.0" />
+  <Identity Name="45c15f2d-67e3-4bdf-8568-e214a592e955" Publisher="CN=win10" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="d47b6d19-bba9-4ce8-a054-3b729533d4e5" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>RoombaBridge</DisplayName>
