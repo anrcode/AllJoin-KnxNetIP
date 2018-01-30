@@ -3,9 +3,11 @@
 
 namespace RoombaAdapter.Roomba
 {
-    internal delegate void RoombaStateEventHandler(object sender, RoombaState e);
+    internal delegate void RobotStateEventHandler(object sender, RobotState e);
+    internal delegate void PoseChangedEventHandler(object sender, PoseState e);
+    internal delegate void CleanMissionStateEventHandler(object sender, CleanMissionState e);
 
-    internal class RoombaState : EventArgs
+    internal class RobotState : EventArgs
     {
         public string Country { get; internal set; }
 
@@ -13,9 +15,7 @@ namespace RoombaAdapter.Roomba
 
         public uint BatPct { get; internal set; }
 
-        public RoombaBinState Bin { get; internal set; }
-
-        public CleanMissionState CleanMission { get; internal set; }
+        public BinState Bin { get; internal set; }
 
         public CapState Cap { get; internal set; }
 
@@ -31,32 +31,19 @@ namespace RoombaAdapter.Roomba
 
         public bool SchedHold { get; internal set; }
 
-        public PoseState Pose { get; internal set; }
-
-        public RoombaState()
+        public RobotState()
         {
-            this.Bin = new RoombaBinState();
-            this.CleanMission = new CleanMissionState();
+            this.Bin = new BinState();
             this.Cap = new CapState();
-            this.Pose = new PoseState();
         }
     }
 
-    public sealed class RoombaBinState
+    public sealed class BinState
     {
         public bool Present { get; internal set; }
 
         public bool IsFull { get; internal set; }
-    }
-
-    public sealed class CleanMissionState
-    {
-        public string Cycle { get; internal set; }
-
-        public string Phase { get; internal set; }
-
-        public uint Sqft { get; internal set; }
-    }
+    } 
 
     public sealed class CapState
     {
@@ -81,7 +68,20 @@ namespace RoombaAdapter.Roomba
         public uint Eco { get; internal set; }
     }
 
-    public sealed class PoseState
+    internal class CleanMissionState : EventArgs
+    {
+        public string Cycle { get; internal set; }
+
+        public string Phase { get; internal set; }
+
+        public uint MissionNo { get; internal set; }
+
+        public TimeSpan MissionTime { get; internal set; }
+
+        public uint Sqft { get; internal set; }
+    }
+
+    internal class PoseState : EventArgs
     {
         public int Theta { get; internal set; }
 

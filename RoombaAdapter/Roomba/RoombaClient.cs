@@ -19,13 +19,15 @@ namespace RoombaAdapter.Roomba
         private string _pass;
    
         private MqttClient _client = null;
-        private RoombaState _state = new RoombaState();
+        private RobotState _state = new RobotState();
 
         private StringBuilder _log = new StringBuilder();
 
-        public event RoombaStateEventHandler StateChanged;
         public event EventHandler Disconnected;
-        public event EventHandler ConnectionLost;
+
+        public event RobotStateEventHandler StateChanged;
+        public event CleanMissionStateEventHandler CleanMissionStateChanged;
+        public event PoseChangedEventHandler PoseChanged;
 
 
         public RoombaClient(HostName remoteHost, string remoteService, string user, string pass)
@@ -102,11 +104,6 @@ namespace RoombaAdapter.Roomba
                 _state.MapUploadAllowed = staterep.GetNamedBoolean("mapUploadAllowed");
             }
 
-            if (staterep.ContainsKey("batPct"))
-            {
-                _state.BatPct = (uint)staterep.GetNamedNumber("batPct");
-            }
-
             if (staterep.ContainsKey("bin"))
             {
                 var bin = staterep.GetNamedObject("bin");
@@ -114,27 +111,19 @@ namespace RoombaAdapter.Roomba
                 _state.Bin.IsFull = bin.GetNamedBoolean("full");
             }
 
-            if (staterep.ContainsKey("cleanMissionStatus"))
-            {
-                var bin = staterep.GetNamedObject("cleanMissionStatus");
-                _state.CleanMission.Cycle = bin.GetNamedString("cycle");
-                _state.CleanMission.Phase = bin.GetNamedString("phase");
-                _state.CleanMission.Sqft = (uint)bin.GetNamedNumber("sqft");
-            }
-
             if (staterep.ContainsKey("cap"))
             {
-                var bin = staterep.GetNamedObject("cap");
-                _state.Cap.Pose = (uint)bin.GetNamedNumber("pose");
-                _state.Cap.Ota = (uint)bin.GetNamedNumber("ota");
-                _state.Cap.MultiPass = (uint)bin.GetNamedNumber("multiPass");
-                _state.Cap.CarpetBoost = (uint)bin.GetNamedNumber("carpetBoost");
-                _state.Cap.PP = (uint)bin.GetNamedNumber("pp");
-                _state.Cap.BinFullDetect = (uint)bin.GetNamedNumber("binFullDetect");
-                _state.Cap.LangOta = (uint)bin.GetNamedNumber("langOta");
-                _state.Cap.Maps = (uint)bin.GetNamedNumber("maps");
-                _state.Cap.Edge = (uint)bin.GetNamedNumber("edge");
-                _state.Cap.Eco = (uint)bin.GetNamedNumber("eco");
+                var cap = staterep.GetNamedObject("cap");
+                _state.Cap.Pose = (uint)cap.GetNamedNumber("pose");
+                _state.Cap.Ota = (uint)cap.GetNamedNumber("ota");
+                _state.Cap.MultiPass = (uint)cap.GetNamedNumber("multiPass");
+                _state.Cap.CarpetBoost = (uint)cap.GetNamedNumber("carpetBoost");
+                _state.Cap.PP = (uint)cap.GetNamedNumber("pp");
+                _state.Cap.BinFullDetect = (uint)cap.GetNamedNumber("binFullDetect");
+                _state.Cap.LangOta = (uint)cap.GetNamedNumber("langOta");
+                _state.Cap.Maps = (uint)cap.GetNamedNumber("maps");
+                _state.Cap.Edge = (uint)cap.GetNamedNumber("edge");
+                _state.Cap.Eco = (uint)cap.GetNamedNumber("eco");
             }
 
             if (staterep.ContainsKey("vacHigh"))
@@ -167,13 +156,36 @@ namespace RoombaAdapter.Roomba
                 _state.SchedHold = staterep.GetNamedBoolean("schedHold");
             }
 
+            if (staterep.ContainsKey("cleanMissionStatus"))
+            {
+                var clennMissionState = staterep.GetNamedObject("cleanMissionStatus");
+
+                this.CleanMissionStateChanged?.Invoke(this, new CleanMissionState()
+                {
+                    Cycle = clennMissionState.GetNamedString("cycle"),
+                    Phase = clennMissionState.GetNamedString("phase"),
+                    MissionNo = (uint)clennMissionState.GetNamedNumber("nMssn"),
+                    MissionTime = TimeSpan.FromMinutes(clennMissionState.GetNamedNumber("mssnM")),
+                    Sqft = (uint)clennMissionState.GetNamedNumber("sqft")
+                });
+            }
+
             if (staterep.ContainsKey("pose"))
             {
                 var pose = staterep.GetNamedObject("pose");
-                _state.Pose.Theta = (int)pose.GetNamedNumber("theta");
                 var point = pose.GetNamedObject("point");
-                _state.Pose.X = (int)point.GetNamedNumber("y");
-                _state.Pose.Y = (int)point.GetNamedNumber("x");
+
+                this.PoseChanged?.Invoke(this, new PoseState()
+                {
+                    Theta = (int)pose.GetNamedNumber("theta"),
+                    X = (int)point.GetNamedNumber("y"),
+                    Y = (int)point.GetNamedNumber("x")
+                });
+            }
+
+            if (staterep.ContainsKey("batPct"))
+            {
+                _state.BatPct = (uint)staterep.GetNamedNumber("batPct");
             }
 
             this.StateChanged?.Invoke(this, _state);

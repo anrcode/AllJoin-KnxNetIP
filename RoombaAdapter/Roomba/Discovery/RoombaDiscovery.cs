@@ -4,6 +4,7 @@ using System.Text;
 using Spark.Universal.Net;
 using Windows.Data.Json;
 
+
 namespace RoombaAdapter.Roomba.Discovery
 {
     internal class RoombaDiscovery : SparkAlljoyn.Discovery.AdapterDiscoveryBase
@@ -50,7 +51,7 @@ namespace RoombaAdapter.Roomba.Discovery
             var blid = hostName.Split('-')[1];
             var pass = ":1:1515862749:YYxDNy5nydFOrI88";
             var conn = new RoombaClient(e.RemoteAddress, "8883", blid, pass);
-            conn.ConnectionLost += (object s, EventArgs args) =>
+            conn.Disconnected += (object s, EventArgs args) =>
             {
                 this.RemoveDevice(mac);
             };
