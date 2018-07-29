@@ -83,18 +83,19 @@ namespace KnxNetIPAdapter.KnxNet
 
             // header
             var header = new byte[10];
-            header[00] = 0x06;
-            header[01] = 0x10;
-            header[02] = 0x04;
-            header[03] = 0x20;
-            var totalLength = BitConverter.GetBytes(cemiBytes.Length + header.Length);
+            header[00] = 0x06; /* 06 - Header Length */
+            header[01] = 0x10; /* 10 - KNXnet version (1.0) */
+            header[02] = 0x04; /* 04 - hi-byte Service type descriptor (TUNNELLING_REQUEST) */
+            header[03] = 0x20; /* 20 - lo-byte Service type descriptor (TUNNELLING_REQUEST) */
+            var totalLength = BitConverter.GetBytes(header.Length + cemiBytes.Length);
             header[04] = totalLength[1];
             header[05] = totalLength[0];
-            // connection header
-            header[06] = 0x04;
+            
+            /* Connection Header (4 Bytes) */
+            header[06] = 0x04; /* 04 - Structure length */
             header[07] = _channelId;
             header[08] = _sequenceNo++;
-            header[09] = 0x00;         
+            header[09] = 0x00; /* 00 - Reserved */        
 
             var datagram = new byte[header.Length + cemiBytes.Length];
             Array.Copy(header, datagram, header.Length);
@@ -115,18 +116,19 @@ namespace KnxNetIPAdapter.KnxNet
 
             // header
             var header = new byte[10];
-            header[00] = 0x06;
-            header[01] = 0x10;
-            header[02] = 0x04;
-            header[03] = 0x20;
-            var totalLength = BitConverter.GetBytes(cemiBytes.Length + header.Length);
+            header[00] = 0x06; /* 06 - Header Length */
+            header[01] = 0x10; /* 10 - KNXnet version (1.0) */
+            header[02] = 0x04; /* 04 - hi-byte Service type descriptor (TUNNELLING_REQUEST) */
+            header[03] = 0x20; /* 20 - lo-byte Service type descriptor (TUNNELLING_REQUEST) */
+            var totalLength = BitConverter.GetBytes(header.Length + cemiBytes.Length);
             header[04] = totalLength[1];
             header[05] = totalLength[0];
-            // connection header
-            header[06] = 0x04;
+            
+            /* Connection Header (4 Bytes) */
+            header[06] = 0x04; /* 04 - Structure length */
             header[07] = _channelId;
             header[08] = _sequenceNo++;
-            header[09] = 0x00;         
+            header[09] = 0x00; /* 00 - Reserved */       
 
             var datagram = new byte[header.Length + cemiBytes.Length];
             Array.Copy(header, datagram, header.Length);
@@ -163,35 +165,40 @@ namespace KnxNetIPAdapter.KnxNet
 
         private async void SendConnectRequest()
         {
-            // HEADER
+            /* header */
             var datagram = new byte[26];
-            datagram[00] = 0x06;
-            datagram[01] = 0x10;
-            datagram[02] = 0x02;
-            datagram[03] = 0x05;
-            datagram[04] = 0x00;
-            datagram[05] = 0x1A;
+            datagram[00] = 0x06; /* 06 - Header Length */
+            datagram[01] = 0x10; /* 10 - KNXnet version (1.0) */
+            datagram[02] = 0x02; /* 02 - hi-byte Service type descriptor (CONNECTION_REQUEST) */
+            datagram[03] = 0x05; /* 05 - lo-byte Service type descriptor (CONNECTION_REQUEST) */
+            datagram[04] = 0x00; /* 00 - hi-byte total length */
+            datagram[05] = 0x1A; /* 1A - lo-byte total lengt 26 bytes */
 
-            datagram[06] = 0x08;
-            datagram[07] = 0x01;
+            /* Connection HPAI */
+            datagram[06] = 0x08; /* 08 - Host Protocol Address Information (HPAI) Lenght */
+            datagram[07] = 0x01; /* 01 - Host Protocol Address Information (HPAI) Lenght */
             datagram[08] = _localEndpoint.Address.GetAddressBytes()[0];
             datagram[09] = _localEndpoint.Address.GetAddressBytes()[1];
             datagram[10] = _localEndpoint.Address.GetAddressBytes()[2];
             datagram[11] = _localEndpoint.Address.GetAddressBytes()[3];
             datagram[12] = (byte)(_localEndpoint.Port >> 8);
             datagram[13] = (byte)_localEndpoint.Port;
-            datagram[14] = 0x08;
-            datagram[15] = 0x01;
+            
+            /* Tunnelling HPAI */
+            datagram[14] = 0x08; /* 08 - Host Protocol Address Information (HPAI) Lenght */
+            datagram[15] = 0x01; /* 01 - Host Protocol Address Information (HPAI) Lenght */
             datagram[16] = _localEndpoint.Address.GetAddressBytes()[0];
             datagram[17] = _localEndpoint.Address.GetAddressBytes()[1];
             datagram[18] = _localEndpoint.Address.GetAddressBytes()[2];
             datagram[19] = _localEndpoint.Address.GetAddressBytes()[3];
             datagram[20] = (byte)(_localEndpoint.Port >> 8);
             datagram[21] = (byte)_localEndpoint.Port;
-            datagram[22] = 0x04;
-            datagram[23] = 0x04;
-            datagram[24] = 0x02;
-            datagram[25] = 0x00;
+            
+            /* CRI */
+            datagram[22] = 0x04; /* structure len (4 bytes) */
+            datagram[23] = 0x04; /* Tunnel Connection */
+            datagram[24] = 0x02; /* KNX Layer (Tunnel Link Layer) */
+            datagram[25] = 0x00; /* Reserved */
 
             await _udpClient?.Send(datagram);
         }
@@ -202,7 +209,7 @@ namespace KnxNetIPAdapter.KnxNet
             var knxDatagram = KnxNetTunnelingDatagram.FromBytes(datagram);
             if (knxDatagram == null) return;
 
-            if (knxDatagram.channel_id == 0x00 && knxDatagram.status == 0x24)
+            if (knxDatagram.channel_id == 0x00 && knxDatagram.status == 0x24) /* TODO: status should be 0 */
             {
                 // no more connections available
                 return;
@@ -218,18 +225,18 @@ namespace KnxNetIPAdapter.KnxNet
         {
             // header
             var datagram = new byte[16];
-            datagram[00] = 0x06;
-            datagram[01] = 0x10;
-            datagram[02] = 0x02;
-            datagram[03] = 0x09;
-            datagram[04] = 0x00;
-            datagram[05] = 0x10;
-            // connection header
+            datagram[00] = 0x06; /* 06 - Header Length */
+            datagram[01] = 0x10; /* 10 - KNXnet version (1.0) */
+            datagram[02] = 0x02; /* 02 - hi-byte Service type descriptor (DISCONNECT_REQUEST) */
+            datagram[03] = 0x09; /* 09 - lo-byte Service type descriptor (DISCONNECT_REQUEST) */
+            datagram[04] = 0x00; /* 00 - hi-byte total length */
+            datagram[05] = 0x10; /* 10 - lo-byte total lengt 16 Bytes */
+            
+            /* data (10 Bytes) */
             datagram[06] = _channelId;
             datagram[07] = 0x00;
-            datagram[08] = 0x08;
-            datagram[09] = 0x01;
-
+            datagram[08] = 0x08; /* 08 - Host Protocol Address Information (HPAI) Lenght */
+            datagram[09] = 0x01; /* 01 - Host Protocol Code 0x01 -> IPV4_UDP, 0x02 -> IPV6_TCP */
             datagram[10] = _localEndpoint.Address.GetAddressBytes()[0];
             datagram[11] = _localEndpoint.Address.GetAddressBytes()[1];
             datagram[12] = _localEndpoint.Address.GetAddressBytes()[2];
@@ -257,18 +264,18 @@ namespace KnxNetIPAdapter.KnxNet
         {
             // header
             var datagram = new byte[16];
-            datagram[00] = 0x06;
-            datagram[01] = 0x10;
-            datagram[02] = 0x02;
-            datagram[03] = 0x07;
-            datagram[04] = 0x00;
-            datagram[05] = 0x10;
-            // connection header
+            datagram[00] = 0x06; /* 06 - Header Length */
+            datagram[01] = 0x10; /* 10 - KNXnet version (1.0) */
+            datagram[02] = 0x02; /* 02 - hi-byte Service type descriptor (CONNECTIONSTATE_REQUEST) */
+            datagram[03] = 0x07; /* 07 - lo-byte Service type descriptor (CONNECTIONSTATE_REQUEST) */
+            datagram[04] = 0x00; /* 00 - hi-byte total length */
+            datagram[05] = 0x10; /* 10 - lo-byte total lengt 16 bytes */
+            
+            /* Connection HAPI (10 Bytes) */
             datagram[06] = _channelId;
-            datagram[07] = 0x00;
-            datagram[08] = 0x08;
-            datagram[09] = 0x01;
-
+            datagram[07] = 0x00; /* 00 - */
+            datagram[08] = 0x08; /* 08 - Host Protocol Address Information (HPAI) Lenght */
+            datagram[09] = 0x01; /* 01 - Host Protocol Code 0x01 -> IPV4_UDP, 0x02 -> IPV6_TCP */
             datagram[10] = _localEndpoint.Address.GetAddressBytes()[0];
             datagram[11] = _localEndpoint.Address.GetAddressBytes()[1];
             datagram[12] = _localEndpoint.Address.GetAddressBytes()[2];
@@ -284,7 +291,7 @@ namespace KnxNetIPAdapter.KnxNet
             var knxDatagram = KnxNetTunnelingDatagram.FromBytes(datagram);
             if (knxDatagram == null) return;
 
-            if (knxDatagram.status != 0x21) return;
+            if (knxDatagram.status != 0x21) return; /* TODO: status should be 0 */
 
             this.Disconnect();
         }
@@ -293,17 +300,18 @@ namespace KnxNetIPAdapter.KnxNet
         {
             // header
             var datagram = new byte[10];
-            datagram[00] = 0x06;
-            datagram[01] = 0x10;
-            datagram[02] = 0x04;
-            datagram[03] = 0x21;
-            datagram[04] = 0x00;
-            datagram[05] = 0x0A;
-            // connection header
-            datagram[06] = 0x04;
+            datagram[00] = 0x06; /* 06 - Header Length */
+            datagram[01] = 0x10; /* 10 - KNXnet version (1.0) */
+            datagram[02] = 0x04; /* 04 - hi-byte Service type descriptor (TUNNELLING_ACK) */
+            datagram[03] = 0x21; /* 21 - lo-byte Service type descriptor (TUNNELLING_ACK) */
+            datagram[04] = 0x00; /* 00 - hi-byte total length */
+            datagram[05] = 0x0A; /* 0A - lo-byte total lengt 10 bytes */
+            
+            /* ConnectionHeader (4 Bytes) */
+            datagram[06] = 0x04; /* 04 - Structure length */
             datagram[07] = _channelId;
             datagram[08] = sequenceNumber;
-            datagram[09] = 0x00;
+            datagram[09] = 0x00; /* 00 our error code */
 
             await _udpClient?.Send(datagram);
         }
@@ -362,6 +370,7 @@ namespace KnxNetIPAdapter.KnxNet
         private void ProcessTunnelingAck(byte[] datagram)
         {
             // do nothing
+            // byte no. 10 is the status/error number, zero is perfect!
         }
     }
 }

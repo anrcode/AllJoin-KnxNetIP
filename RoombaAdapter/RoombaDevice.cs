@@ -27,9 +27,7 @@ namespace RoombaAdapter
             this.Properties.Clear();
 
             var statusProp = new BridgeAdapterProperty<RoombaDevice>(this, "MyRoomba", "com.allseen.SmartHome.Roomba");
-            statusProp.Attributes.Add(new BridgeAdapterAttribute("EnergyTotal", 0.0, E_ACCESS_TYPE.ACCESS_READ) { COVBehavior = SignalBehavior.Always });
-            statusProp.Attributes.Add(new BridgeAdapterAttribute("EnergyHi", 0.0, E_ACCESS_TYPE.ACCESS_READ) { COVBehavior = SignalBehavior.Always });
-            statusProp.Attributes.Add(new BridgeAdapterAttribute("EnergyLo", 0.0, E_ACCESS_TYPE.ACCESS_READ) { COVBehavior = SignalBehavior.Always });
+            statusProp.Attributes.Add(new BridgeAdapterAttribute("Command", "", E_ACCESS_TYPE.ACCESS_WRITE) { COVBehavior = SignalBehavior.Never });
 
             this.Properties.Add(statusProp);
             this.AddChangeOfValueSignal(statusProp);
@@ -37,18 +35,21 @@ namespace RoombaAdapter
 
         virtual internal async Task<bool> AquireCurrentState()
         {
-            await Task.Delay(3000);
+            await Task.Delay(500);
             return true;
         }
 
         virtual public void CallMethod(IAdapterMethod methodn)
         {
-
+            
         }
 
-        virtual public void SendPropertyValue(IAdapterProperty Property, IAdapterValue Value)
+        virtual public void SendPropertyValue(IAdapterProperty property, IAdapterValue value)
         {
-
+            if (value.Name == "Command")
+            {
+                _conn.SendCmd((string)value.Data);
+            }
         }
     }
 }

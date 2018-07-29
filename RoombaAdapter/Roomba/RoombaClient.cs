@@ -69,7 +69,7 @@ namespace RoombaAdapter.Roomba
             }
         }
 
-        private void SendCmd(string command)
+        public void SendCmd(string command)
         {
             var jsonObject = new JsonObject();
             jsonObject["command"] = JsonValue.CreateStringValue(command); // start, pause, stop, resume, dock
@@ -78,6 +78,20 @@ namespace RoombaAdapter.Roomba
             jsonObject["initiator"] = JsonValue.CreateStringValue("localApp");
             string jsonString = jsonObject.Stringify();
             ushort t2 = _client.Publish("cmd", Encoding.UTF8.GetBytes(jsonString));
+        }
+
+        public void SetEdgeClean(bool value)
+        {
+            var jsonObject = new JsonObject();
+            jsonObject["openOnly"] = JsonValue.CreateBooleanValue(!value);
+            this.SetPreference(jsonObject);
+        }
+
+        public void SetAlwaysFinish(bool value)
+        {
+            var jsonObject = new JsonObject();
+            jsonObject["binPause"] = JsonValue.CreateBooleanValue(value);
+            this.SetPreference(jsonObject);
         }
 
         private void SetPreference(JsonObject state)
